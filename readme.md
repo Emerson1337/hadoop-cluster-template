@@ -1,4 +1,6 @@
-![image](https://github.com/user-attachments/assets/17c34753-eed3-47ab-8621-049f9afdaad3)# Passo a passo para rodar containers contendo o hadoop cluster a gerenciá-los usando Kubernets.
+# Como configurar NODES e Master utilizando Kubernetes (minikube) para rodar HDFS Cluster (Hadoop) 
+![image](https://github.com/user-attachments/assets/53cab607-0a92-4dc1-84ee-d8c2673982de)
+
 
 ## Passo 1: Configurar MINIKUBE para que possamos gerenciar o Kubernetes localmente
 
