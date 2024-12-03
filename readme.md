@@ -1,4 +1,4 @@
-# Passo a passo para rodar containers contendo o hadoop cluster a gerenciá-los usando Kubernets.
+![image](https://github.com/user-attachments/assets/17c34753-eed3-47ab-8621-049f9afdaad3)# Passo a passo para rodar containers contendo o hadoop cluster a gerenciá-los usando Kubernets.
 
 ## Passo 1: Configurar MINIKUBE para que possamos gerenciar o Kubernetes localmente
 
@@ -83,3 +83,15 @@ kubectl exec -it sparkhdfs-master-namenode-0 -- hdfs dfs -mkdir -p /user/hadoop/
 ```bash
 kubectl cp ./dataset/sample.csv default/sparkhdfs-worker-datanode-0:/tmp/sample.csv
 ```
+
+
+
+- Hadoop dashboard
+![image](https://github.com/user-attachments/assets/2e44bf61-371a-41e4-8523-24cee750c146)
+
+- Spark rodando
+![image](https://github.com/user-attachments/assets/50eabeee-b0f4-4bac-a444-75d9bcac2c25)
+
+- Kubernets rodando
+![image](https://github.com/user-attachments/assets/53cab607-0a92-4dc1-84ee-d8c2673982de)
+
