@@ -1,6 +1,6 @@
-# Como configurar NODES e Master utilizando Kubernetes (minikube) para rodar HDFS Cluster (Hadoop) 
-![image](https://github.com/user-attachments/assets/53cab607-0a92-4dc1-84ee-d8c2673982de)
+# Como configurar NODES e Master utilizando Kubernetes (minikube) para rodar HDFS Cluster (Hadoop)
 
+![image](https://github.com/user-attachments/assets/53cab607-0a92-4dc1-84ee-d8c2673982de)
 
 ## Passo 1: Configurar MINIKUBE para que possamos gerenciar o Kubernetes localmente
 
@@ -86,14 +86,25 @@ kubectl exec -it sparkhdfs-master-namenode-0 -- hdfs dfs -mkdir -p /user/hadoop/
 kubectl cp ./dataset/sample.csv default/sparkhdfs-worker-datanode-0:/tmp/sample.csv
 ```
 
-
-
 - Hadoop dashboard
-![image](https://github.com/user-attachments/assets/2e44bf61-371a-41e4-8523-24cee750c146)
+  ![image](https://github.com/user-attachments/assets/2e44bf61-371a-41e4-8523-24cee750c146)
 
 - Spark rodando
-![image](https://github.com/user-attachments/assets/50eabeee-b0f4-4bac-a444-75d9bcac2c25)
+  ![image](https://github.com/user-attachments/assets/50eabeee-b0f4-4bac-a444-75d9bcac2c25)
 
 - Kubernets rodando
-![image](https://github.com/user-attachments/assets/53cab607-0a92-4dc1-84ee-d8c2673982de)
+  ![image](https://github.com/user-attachments/assets/53cab607-0a92-4dc1-84ee-d8c2673982de)
 
+# Uma vez configurado, para rodar novamente faça:
+
+```bash
+minikube start --profile sparkhdfs --cpus 6 --memory 7846MB {MEMORIA_DISPONIVEL: pelo menos 7846MB} {opcional: --driver virtualbox --no-vtx-check}
+```
+
+```bash
+kubectl port-forward svc/sparkhdfs-master-namenode 8080:8080 50070:50070
+```
+
+```bash
+minikube dashboard --profile sparkhdfs
+```
