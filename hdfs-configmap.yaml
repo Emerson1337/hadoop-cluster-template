@@ -18,10 +18,6 @@ data:
     		<value>false</value>
     	</property>
     </configuration>
-  environment-variables: |
-    export PYTHON_HOME=/usr/bin/python3
-    export PATH=$PYTHON_HOME:$PATH
-    export PYTHONPATH=$PYTHON_HOME/lib/python3.x/site-packages
 kind: ConfigMap
 metadata:
   creationTimestamp: null
