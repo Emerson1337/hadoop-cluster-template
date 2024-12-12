@@ -43,10 +43,10 @@ spec:
           name: bitnami-spark-worker
           resources:
             requests:
-              memory: "1Gi"
+              memory: "2Gi"
               cpu: "500m"
             limits:
-              memory: "1Gi"
+              memory: "2Gi"
               cpu: "800m"
           ports:
             - containerPort: 8081
@@ -212,7 +212,7 @@ metadata:
 spec:
   storageClassName: standard
   capacity:
-    storage: 4Gi
+    storage: 12Gi
   volumeMode: Filesystem
   accessModes:
     - ReadWriteOnce

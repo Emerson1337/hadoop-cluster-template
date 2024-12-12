@@ -5,7 +5,7 @@
 ## Passo 1: Configurar MINIKUBE para que possamos gerenciar o Kubernetes localmente
 
 ```bash
-minikube start --profile sparkhdfs --cpus 6 --memory 7846MB {MEMORIA_DISPONIVEL: pelo menos 7846MB} {opcional: --driver virtualbox --no-vtx-check}
+minikube start --profile sparkhdfs --cpus 6 --memory 15360MB {MEMORIA_DISPONIVEL: pelo menos 15360MB} opcional: --driver virtualbox --no-vtx-check
 ```
 
 ## Passo 2: Habilitar o SSH no perfil do MINIKUBE que acamos acabamos de criar e entrar na linha de comando do serviço
@@ -74,10 +74,10 @@ Você deve receber algo como:
 kubectl exec -it sparkhdfs-master-namenode-0 -- hdfs dfsadmin -safemode get
 ```
 
-3. Criei o diretorio para fazer upload do dado para o cluster.
+3. Crie o diretorio para fazer upload do dado para o cluster.
 
 ```bash
-kubectl exec -it sparkhdfs-master-namenode-0 -- hdfs dfs -mkdir -p /user/hadoop/dataset
+kubectl exec -it sparkhdfs-master-namenode-0 -- hdfs dfs -mkdir -p /user/input
 ```
 
 4. Envie o dado do NODE para o HDFS
@@ -107,4 +107,10 @@ kubectl port-forward svc/sparkhdfs-master-namenode 8080:8080 50070:50070
 
 ```bash
 minikube dashboard --profile sparkhdfs
+```
+
+# Para resetar toda a configuração
+
+```bash
+kubectl delete all --all
 ```
