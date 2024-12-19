@@ -1,6 +1,39 @@
 # -*- coding: utf-8 -*-
 from functools import reduce
-from collections import defaultdict   
+from collections import defaultdict
+import csv
+import json
+
+# 2 tasks
+# 1. Rodar o codigo dentro do hadoop paralelamente
+# 2. Verificar como sera a leitura do arquivo csv e onde ele vai se encontrar e fazer o script para pegar os dados
+
+def csv_mapper(csv_file_path):
+    """
+    Lê um arquivo CSV e mapeia os dados para o formato adequado para análise.
+    """
+    with open(csv_file_path, mode='r', encoding='utf-8') as csv_file:
+        reader = csv.DictReader(csv_file)
+        mapped_data = []    
+        
+        for row in reader:
+            print('row', row)
+            # Criando o formato esperado pelo syn_flood_mapper
+            mapped_data.append({
+                "timestamp": row["timestamp"],
+                "source_ip": row["source_ip"],
+                "source_port": int(row["source_port"]),
+                "destination_ip": row["destination_ip"],
+                "destination_port": int(row["destination_port"]),
+                "flag": row["flag"],
+                "sequence": row["sequence"],
+                "acknowledgment": int(row["acknowledgment"]),
+                "window_size": int(row["window_size"]),
+                "options": row["options"],
+                "payload_length": int(row["payload_length"])
+            })
+    
+    return mapped_data
 
 # input data
 data = [
@@ -30,7 +63,7 @@ data = [
     "options": "nop,nop,TS val 2621069157 ecr 2526399357",
     "payload_length": 1165
   },
-    {
+  {
     "timestamp": "11:16:58.172574",
     "source_ip": "ec2-184-72-135-61.compute-1.amazonaws.com",
     "source_port": 27017,
@@ -110,15 +143,6 @@ data = [
   }
 ]
 
-# def map_traffic(data):
-#     return [
-#         {
-#             "key": item['source_ip'] + "|" + item['destination_ip'] + "|" + str(item['destination_port']),
-#             "value": item['payload_length']
-#         }
-#         for item in data
-#     ]
-
 def syn_flood_mapper(packet):
     """
     Emite a chave como source_ip e destination_ip com o flag SYN.
@@ -169,17 +193,6 @@ def analyze_traffic(syn_data, ack_data, scan_data):
 
     print("\nAnalisando Port Scanning...")
     port_scanning_reducer(scan_data)
-
-# def syn_flood_reducer(mapped_data):
-#     syn_counts = defaultdict(int)
-#     for key, count in mapped_data:
-#         syn_counts[key] += count
-
-#     # Identificar source-destination com muitos SYNs
-#     print('syn_counts.items()', syn_counts.items())
-#     for key, count in syn_counts.items():
-#         if count > 1000:  # Limite arbitrário para detecção
-#             print("Possível SYN Flood detectado para " + {key} + ":" + {count} + " pacotes SYN.")
 
 def syn_flood_reducer(syn_data, ack_data):
     """
@@ -243,6 +256,7 @@ def port_scanning_reducer(mapped_data):
             if len(ports) > 5:  # Limite arbitrário para detecção
                 print("Possível Port Scanning detectado de " + {source_ip} + " para " + {destination_ip} + " : " + {len(ports)} + " portas escaneadas.")
 
+csv_mapper('test.csv')
 syn_data, ack_data, scan_data = process_packets(data)
 analyze_traffic(syn_data, ack_data, scan_data)
 
