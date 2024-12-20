@@ -16,7 +16,7 @@ executar_por_tempo(30)
 tcpdump.terminate()
 tcpdump.wait()
 
-tshark = subprocess.Popen('tshark -r output.pcap -T fields -e frame.time -e ip.src -e tcp.srcport -e ip.dst -e tcp.dstport -e tcp.flags.str -e tcp.seq -e tcp.ack -e tcp.window_size_value -e tcp.options -e tcp.len -E separator=, > saida.csv', shell=True)
+tshark = subprocess.Popen('tshark -r output.pcap -T fields -e frame.time -e ip.src -e tcp.srcport -e ip.dst -e tcp.dstport -e tcp.flags.str -e tcp.seq -e tcp.ack -e tcp.window_size_value -e tcp.options -e tcp.len -t ad -E separator=, > saida.csv', shell=True)
 
 executar_por_tempo(30)
 
@@ -27,7 +27,7 @@ tshark.wait()
 arquivo_csv = 'saida.csv'
 arquivo_temp = 'arquivo_temp.csv'
 
-titulos = ['Time', 'Src', 'Srcport ', 'Dst', 'Dstport', 'Flags', 'Seq', 'Ack', 'Window Size Value', 'Options', 'Len']
+titulos = ['timestamp', 'source_ip', 'source_port ', 'destination_ip', 'destination_port', 'flags', 'sequence_number', 'acknowledgment_number', 'window_size', 'options', 'payload_length']
 
 with open(arquivo_csv, 'r', newline='', encoding='utf-8') as arquivo_original, \
      open(arquivo_temp, 'w', newline='', encoding='utf-8') as arquivo_modificado:
