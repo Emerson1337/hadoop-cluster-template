@@ -5,7 +5,7 @@
 ## Passo 1: Configurar MINIKUBE para que possamos gerenciar o Kubernetes localmente
 
 ```bash
-minikube start --profile sparkhdfs --cpus 6 --memory 15360MB {MEMORIA_DISPONIVEL: pelo menos 15360MB} opcional: --driver virtualbox --no-vtx-check
+minikube start --profile sparkhdfs --cpus 6 --memory 15360MB {MEMORIA_DISPONIVEL: pelo menos 15360MB} {opcional: --driver virtualbox} --no-vtx-check
 ```
 
 ## Passo 2: Habilitar o SSH no perfil do MINIKUBE que acamos acabamos de criar e entrar na linha de comando do serviço
@@ -98,7 +98,7 @@ kubectl cp ./dataset/sample.csv default/sparkhdfs-worker-datanode-0:/tmp/sample.
 # Uma vez configurado, para rodar novamente faça:
 
 ```bash
-minikube start --profile sparkhdfs --cpus 6 --memory 7846MB {MEMORIA_DISPONIVEL: pelo menos 7846MB} {opcional: --driver virtualbox --no-vtx-check}
+minikube start --profile sparkhdfs --cpus 6 --memory 15360MB {MEMORIA_DISPONIVEL: pelo menos 7846MB} {opcional: --driver virtualbox} --no-vtx-check
 ```
 
 ```bash
