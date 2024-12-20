@@ -23,10 +23,11 @@ executar_por_tempo(30)
 tshark.terminate()
 tshark.wait()
 
+# Tratamento do arquivo CSV
 arquivo_csv = 'saida.csv'
 arquivo_temp = 'arquivo_temp.csv'
 
-titulos = ['Coluna1', 'Coluna2', 'Coluna3', 'Coluna4', 'Coluna5', 'Coluna6', 'Coluna7', 'Coluna8', 'Coluna9', 'Coluna10', 'Coluna11',] 
+titulos = ['Time', 'Src', 'Srcport ', 'Dst', 'Dstport', 'Flags', 'Seq', 'Ack', 'Window Size Value', 'Options', 'Len']
 
 with open(arquivo_csv, 'r', newline='', encoding='utf-8') as arquivo_original, \
      open(arquivo_temp, 'w', newline='', encoding='utf-8') as arquivo_modificado:
@@ -37,6 +38,10 @@ with open(arquivo_csv, 'r', newline='', encoding='utf-8') as arquivo_original, \
     escritor.writerow(titulos)
 
     for linha in leitor:
+        linha[6] = ''.join(
+            {'C': 'CWR-', 'E': 'ECE-', 'A': 'ACK-', 'P': 'PSH-', 'R': 'RST-', 'S': 'SYN-', 'F': 'FIN-', 'U': 'URG-'}.get(c, c) 
+            for c in linha[6] if c != '·'
+        )
         escritor.writerow(linha)
 
 os.replace(arquivo_temp, arquivo_csv)
