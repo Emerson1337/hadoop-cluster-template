@@ -8,13 +8,7 @@
 minikube start --profile sparkhdfs --cpus 6 --memory 15360MB {MEMORIA_DISPONIVEL: pelo menos 15360MB} opcional: --driver virtualbox --no-vtx-check
 ```
 
-## Passo 2: Habilitar o SSH no perfil do MINIKUBE que acamos acabamos de criar e entrar na linha de comando do serviço
-
-```bash
-minikube ssh --profile sparkhdfs
-```
-
-## Passo 3: Baixar algumas imagens bases disponíveis na internet ([text](https://github.com/Gradiant/dockerized-hadoop)) para usar variáveis de ambiente e configurar algumas propriedades.
+## Passo 2: Baixar algumas imagens bases disponíveis na internet ([text](https://github.com/Gradiant/dockerized-hadoop)) para usar variáveis de ambiente e configurar algumas propriedades.
 
 ```bash
 docker pull gradiant/hdfs-datanode # configurará data nodes, responsáveis pela leitura e escrita de dados.
