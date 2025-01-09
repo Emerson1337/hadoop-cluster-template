@@ -46,45 +46,12 @@ Um link será gerado e você poderá visualizar os nodes em execução.
 # Acessando o Hadoop
 
 Basta acessar:
-https://localhost:50070
+http://localhost:50070
 
 # Acessando o APACHE Spark
 
 Basta acessar:
 http://localhost:8080
-
-# Importando dados para o cluster
-
-Para importar dados para o cluster, é necessário primeiramente enviar o set de dados.
-
-> Testando para o dataset de exemplo neste repositório.
-
-1. Confira se o HDFS está pronto e operante
-
-```bash
-kubectl exec -it sparkhdfs-master-namenode-0 -- hdfs dfsadmin -safemode get
-```
-
-Você deve receber algo como:
-`Safe mode is OFF`
-
-2. Rode para enviar o csv a um dos nodes:
-
-```bash
-kubectl exec -it sparkhdfs-master-namenode-0 -- hdfs dfsadmin -safemode get
-```
-
-3. Crie o diretorio para fazer upload do dado para o cluster.
-
-```bash
-kubectl exec -it sparkhdfs-master-namenode-0 -- hdfs dfs -mkdir -p /user/input
-```
-
-4. Envie o dado do NODE para o HDFS
-
-```bash
-kubectl cp ./dataset/sample.csv default/sparkhdfs-worker-datanode-0:/tmp/sample.csv
-```
 
 - Hadoop dashboard
   ![image](https://github.com/user-attachments/assets/2e44bf61-371a-41e4-8523-24cee750c146)
