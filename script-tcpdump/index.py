@@ -39,7 +39,7 @@ with open(arquivo_csv, 'r', newline='', encoding='utf-8') as arquivo_original, \
 
     for linha in leitor:
         linha[6] = ''.join(
-            {'C': 'CWR-', 'E': 'ECE-', 'A': 'ACK-', 'P': 'PSH-', 'R': 'RST-', 'S': 'SYN-', 'F': 'FIN-', 'U': 'URG-'}.get(c, c) 
+            {'C': 'CWR/', 'E': 'ECE/', 'A': 'ACK/', 'P': 'PSH/', 'R': 'RST/', 'S': 'SYN/', 'F': 'FIN/', 'U': 'URG/'}.get(c, c) 
             for c in linha[6] if c != '·'
         )
         escritor.writerow(linha)
