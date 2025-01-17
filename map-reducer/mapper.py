@@ -1,55 +1,47 @@
+#!/usr/bin/env python3
 import sys
 
 def mapper():
     for line in sys.stdin:
-        line_array = line.split(',')
+        line_array = line.strip().split(',')
+        if len(line_array) < 11:
+            continue
+        
         packet = {
             "timestamp": line_array[0],
             "source_ip": line_array[1],
-            "source_port": line_array[2],
+            "source_port": line_array[2] or '0',
             "destination_ip": line_array[3],
-            "destination_port": line_array[4],
+            "destination_port": line_array[4] or '0',
             "flag": line_array[5],
-            "sequence_number": line_array[6],
-            "acknowledgment_number": line_array[7],
-            "window_size": line_array[8],
-            "options": line_array[9],
-            "payload_length": line_array[10]
+            "sequence_number": line_array[6] or '0',
+            "acknowledgment_number": line_array[7] or '0',
+            "window_size": line_array[8] or '0',
+            "options": line_array[9] or '',
+            "payload_length": line_array[10] or '0',
         }
-        
+
+        flag = packet['flag'].split('/')[0]
+
         """
         Emite a chave como source_ip e destination_port com o flag SYN.
         """
-        if packet['flag'] == 'SYN':
-            key = "syn_ack_flood|{}|{}|{}".format(packet['source_ip'], packet['destination_ip'], packet['destination_port'])
-            yield key, ('SYN', 1)
+        if flag == 'SYN':
+            key = f"syn_ack_flood|{packet['source_ip']}|{packet['destination_ip']}|{packet['destination_port']}"
+            print(f"{key}\tSYN\t1")
 
         """
         Emite a chave como source_ip e destination_port com a flag ACK.
-        """
-        if packet['flag'] == 'ACK':
-            key = "syn_ack_flood|{}|{}|{}".format(packet['source_ip'], packet['destination_ip'], packet['destination_port'])
-            yield key, ('ACK', 1)
+        """    
+        if flag == 'ACK':
+            key = f"syn_ack_flood|{packet['source_ip']}|{packet['destination_ip']}|{packet['destination_port']}"
+            print(f"{key}\tACK\t1")
 
         """
         Emite a chave como source_ip e destination_port para contar varreduras.
         """
-        key = "port_scan|{}|{}".format(packet['source_ip'], packet['destination_ip'])
-        yield key, packet['destination_port']
+        key = f"port_scan|{packet['source_ip']}|{packet['destination_ip']}"
+        print(f"{key}\t{packet['destination_port']}")
 
-
-## Possivel execucao:
-# hadoop jar /path/to/hadoop-streaming.jar \
-#   -input /hdfs/caminho/do/arquivo.csv \
-#   -output /hdfs/caminho/da/saida \
-#   -mapper /path/to/mapper.py \
-#   -reducer /path/to/reducer.py
-
-# kubectl run hadoop-streaming --image=seu-docker-image-com-hadoop-python \
-#   --env="HADOOP_HOME=/path/to/hadoop" \
-#   --command -- /bin/bash -c "
-#     hadoop jar /path/to/hadoop-streaming.jar \
-#       -input /hdfs/caminho/do/arquivo.csv \
-#       -output /hdfs/caminho/da/saida \
-#       -mapper /path/to/mapper.py \
-#       -reducer /path/to/reducer.py
+if __name__ == "__main__":
+    mapper()

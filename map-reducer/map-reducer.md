@@ -56,7 +56,7 @@ hdfs dfs -rm -r /tmp/output
 
 ```bash
 hadoop jar $HADOOP_HOME/share/hadoop/tools/lib/hadoop-streaming-2.7.7.jar \
-  -input /tmp/input/*.txt \
+  -input /tmp/input/*.csv \
   -output /tmp/output/results \
   -mapper "python3 /tmp/scripts/mapper.py" \
   -reducer "python3 /tmp/scripts/reducer.py"
