@@ -1,5 +1,6 @@
 import sys
 from collections import defaultdict
+import json
 
 def reducer():
     """
@@ -33,17 +34,37 @@ def reducer():
                 syn_count = syn_ack_count[key]['SYN']
                 ack_count = syn_ack_count[key]['ACK']
 
+    anomalies = []
+
     # Identifica SYNs sem ACKs
     # se n tiver resposta do cliente e aquela chave tenha mandado mais de 100 syn, consideraremos um padrao anomalo
+    # print("Possível SYN Flood detectado para" + {key} + ":" +{syn_count}+ " pacotes SYN sem ACK.")
     if syn_count > 100 and ack_count == 0:  # Limite arbitrário para SYN Flood
-        print("Possível SYN Flood detectado para" + {key} + ":" +{syn_count}+ " pacotes SYN sem ACK.")
+        anomalies.append({
+            "type": "SYN Flood",
+            "key": key,
+            "syn_packets": syn_count,
+            "ack_packets": ack_count
+        })
 
     # Identifica ACKs sem SYN
     # se n tiver resposta do cliente e aquela chave tenha mandado mais de 100 ack, consideraremos um padrao anomalo
+    # print("Possível ACK Flood detectado para " + {key} + ":" + {ack_count} + " pacotes ACK sem SYN.")
     if ack_count > 100 and syn_count == 0:  # Limite arbitrário para ACK Flood
-        print("Possível ACK Flood detectado para " + {key} + ":" + {ack_count} + " pacotes ACK sem SYN.")
+        anomalies.append({
+            "type": "ACK Flood",
+            "key": key,
+            "syn_packets": syn_count,
+            "ack_packets": ack_count
+        })
 
+    # print(f"Port scanning detectado para {key} com {len(scan_port_counts)} portas: {scan_port_counts.items()}")
     if len(scan_port_counts) > 5:
-        print(f"Port scanning detectado para {key} com {len(scan_port_counts)} portas: {scan_port_counts.items()}")
+        anomalies.append({
+            "type": "Port Scanning",
+            "key": key,
+            "ports": scan_port_counts.items()
+        })
 
-## O que seria uma boa saida apos detectar a anomalia?
+    for anomaly in anomalies:
+        print(json.dumps(anomaly))
