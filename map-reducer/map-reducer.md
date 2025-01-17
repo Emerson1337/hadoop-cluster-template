@@ -41,7 +41,7 @@ chmod a+x /tmp/scripts/*.py
 
 ```bash
 hdfs dfs -mkdir -p /tmp/input
-hdfs dfs -put /tmp/input/*.txt /tmp/input/
+hdfs dfs -put /tmp/input/*.csv /tmp/input/
 
 hdfs dfs -mkdir -p /tmp/scripts
 hdfs dfs -put /tmp/scripts/*.py /tmp/scripts/
