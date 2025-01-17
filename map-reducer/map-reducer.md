@@ -21,8 +21,8 @@ kubectl cp ./dataset/{file}.txt default/sparkhdfs-master-namenode-0:/tmp/input/{
 3 - Elabore o algoritmo MapReduce para processar o arquivo contendo os dados dentro do node (Master) e envie para o container
 
 ```bash
-kubectl cp ./map-reducer/mapper.sh default/sparkhdfs-master-namenode-0:/tmp/scripts/mapper.sh
-kubectl cp ./map-reducer/reducer.sh default/sparkhdfs-master-namenode-0:/tmp/scripts/reducer.sh
+kubectl cp ./map-reducer/mapper.py default/sparkhdfs-master-namenode-0:/tmp/scripts/mapper.py
+kubectl cp ./map-reducer/reducer.py default/sparkhdfs-master-namenode-0:/tmp/scripts/reducer.py
 ```
 
 4 - Adentrar ao node master
@@ -34,7 +34,7 @@ kubectl exec -it sparkhdfs-master-namenode-0 -- bash
 5 - Torne os scripts executáveis
 
 ```bash
-chmod a+x /tmp/scripts/*.sh
+chmod a+x /tmp/scripts/*.py
 ```
 
 6 - Repasse todos os arquivos do container para o cluster
@@ -44,7 +44,7 @@ hdfs dfs -mkdir -p /tmp/input
 hdfs dfs -put /tmp/input/*.txt /tmp/input/
 
 hdfs dfs -mkdir -p /tmp/scripts
-hdfs dfs -put /tmp/scripts/*.sh /tmp/scripts/
+hdfs dfs -put /tmp/scripts/*.py /tmp/scripts/
 
 hdfs dfs -ls /tmp/input
 
@@ -55,7 +55,11 @@ hdfs dfs -rm -r /tmp/output
 7 - Executar o algoritmo no Hadoop
 
 ```bash
-hadoop jar $HADOOP_HOME/share/hadoop/tools/lib/hadoop-streaming-2.7.7.jar -input /tmp/input/*.txt -output /tmp/output/results -mapper /tmp/scripts/mapper.sh -reducer /tmp/scripts/reducer.sh
+hadoop jar $HADOOP_HOME/share/hadoop/tools/lib/hadoop-streaming-2.7.7.jar \
+  -input /tmp/input/*.txt \
+  -output /tmp/output/results \
+  -mapper "python3 /tmp/scripts/mapper.py" \
+  -reducer "python3 /tmp/scripts/reducer.py"
 ```
 
 8 - Checar resultados

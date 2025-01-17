@@ -1,0 +1,16 @@
+FROM gradiant/hdfs-namenode
+
+# Switch to root user for installation
+USER root
+
+# Install Python 3 and pip using apk
+RUN apk update && apk add --no-cache python3 py3-pip
+
+# Create the 'hadoop' user and group
+RUN addgroup -S hadoop && adduser -S hadoop -G hadoop
+
+# Verify Python installation
+RUN python3 --version
+
+# Switch back to the 'hadoop' user
+USER hadoop

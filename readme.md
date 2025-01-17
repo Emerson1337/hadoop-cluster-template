@@ -59,7 +59,7 @@ http://localhost:8080
 # Uma vez configurado, para rodar novamente faça:
 
 ```bash
-minikube start --profile sparkhdfs --cpus 6 --memory 7846MB {MEMORIA_DISPONIVEL: pelo menos 7846MB} {opcional: --driver virtualbox --no-vtx-check}
+minikube start --profile sparkhdfs --cpus 6 --memory 15360MB {MEMORIA_DISPONIVEL: pelo menos 7846MB} {opcional: --driver virtualbox --no-vtx-check}
 ```
 
 ```bash

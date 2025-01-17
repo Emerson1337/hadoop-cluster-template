@@ -5,14 +5,14 @@ metadata:
 spec:
   selector:
     matchLabels:
-      app: sparkhdfs-worker-datanode # has to match .spec.template.metadata.labels
+      app: sparkhdfs-worker-datanode
   serviceName: "sparkhdfs-worker-datanode"
-  replicas: 2 # by default is 1
-  minReadySeconds: 120 # by default is 0
+  replicas: 2
+  minReadySeconds: 120
   template:
     metadata:
       labels:
-        app: sparkhdfs-worker-datanode # has to match .spec.selector.matchLabels
+        app: sparkhdfs-worker-datanode
     spec:
       volumes:
         - name: spark-hdfs-configmap
@@ -20,7 +20,7 @@ spec:
             name: spark-hdfs-configmap
       terminationGracePeriodSeconds: 120
       containers:
-        - image: gradiant/hdfs-datanode
+        - image: emerson1337/hdfs-datanode-python
           name: hdfs-datanode
           resources:
             requests:
@@ -39,6 +39,9 @@ spec:
             - mountPath: /opt/hadoop/etc/hadoop/hdfs-site.xml
               name: spark-hdfs-configmap
               subPath: hdfs-site.xml
+            - mountPath: /opt/hadoop/etc/hadoop/core-site.xml
+              name: spark-hdfs-configmap
+              subPath: core-site.xml
         - image: bitnami/spark:3.3.1
           name: bitnami-spark-worker
           resources:
@@ -71,6 +74,7 @@ spec:
         resources:
           requests:
             storage: 1Gi
+
 ---
 apiVersion: v1
 kind: Service
@@ -85,6 +89,7 @@ spec:
       name: sparkworker
       port: 8081
       targetPort: 8081
+
 ---
 apiVersion: apps/v1
 kind: StatefulSet
@@ -93,14 +98,14 @@ metadata:
 spec:
   selector:
     matchLabels:
-      app: sparkhdfs-master-namenode # has to match .spec.template.metadata.labels
+      app: sparkhdfs-master-namenode
   serviceName: "sparkhdfs-master-namenode"
-  replicas: 1 # by default is 1
-  minReadySeconds: 120 # by default is 0
+  replicas: 1
+  minReadySeconds: 120
   template:
     metadata:
       labels:
-        app: sparkhdfs-master-namenode # has to match .spec.selector.matchLabels
+        app: sparkhdfs-master-namenode
     spec:
       volumes:
         - name: spark-hdfs-configmap
@@ -108,7 +113,7 @@ spec:
             name: spark-hdfs-configmap
       terminationGracePeriodSeconds: 120
       containers:
-        - image: gradiant/hdfs-namenode
+        - image: emerson1337/hdfs-namenode-python
           name: hdfs-namenode
           resources:
             requests:
@@ -127,6 +132,9 @@ spec:
             - mountPath: /opt/hadoop/etc/hadoop/hdfs-site.xml
               name: spark-hdfs-configmap
               subPath: hdfs-site.xml
+            - mountPath: /opt/hadoop/etc/hadoop/core-site.xml
+              name: spark-hdfs-configmap
+              subPath: core-site.xml
             - mountPath: /dataset
               name: hadoop-dataset
         - image: bitnami/spark:3.3.1
@@ -178,6 +186,7 @@ spec:
         resources:
           requests:
             storage: 1Gi
+
 ---
 apiVersion: v1
 kind: Service
@@ -204,6 +213,7 @@ spec:
       name: namenode-protocol
       port: 8020
       targetPort: 8020
+
 ---
 apiVersion: v1
 kind: PersistentVolume
@@ -221,5 +231,3 @@ spec:
   claimRef:
     name: hadoop-dataset-sparkhdfs-master-namenode-0
     namespace: default
----
-
