@@ -16,7 +16,7 @@ executar_por_tempo(30)
 tcpdump.terminate()
 tcpdump.wait()
 
-tshark = subprocess.Popen('tshark -r output.pcap -T fields -e frame.time -e ip.src -e tcp.srcport -e ip.dst -e tcp.dstport -e tcp.flags.str -e tcp.seq -e tcp.ack -e tcp.window_size_value -e tcp.options -e tcp.len -t ad -E separator=, > saida.csv', shell=True)
+tshark = subprocess.Popen('tshark -r output.pcap -T fields -e frame.time_epoch -e ip.src -e tcp.srcport -e ip.dst -e tcp.dstport -e tcp.flags.str -e tcp.seq -e tcp.ack -e tcp.window_size_value -e tcp.options -e tcp.len -E separator=, > saida.csv', shell=True)
 
 executar_por_tempo(30)
 
